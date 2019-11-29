@@ -1,12 +1,5 @@
-# For debugging
-#FROM alpine:3.10.3
-#WORKDIR /
-#COPY --from=build-env /server /
-#CMD ["/server"]
-
 # Go part
 FROM golang:1.13
-LABEL maintainer="eduardo.osorio.it@gmail.com"
 EXPOSE 11111
 WORKDIR /go/src/git.osmon.local
 COPY personalf-services-accounts/accounts personalf-services-accounts/accounts/
@@ -17,6 +10,12 @@ COPY personalf-services/databaseInfo personalf-services/databaseInfo
 RUN go get -d -v ./...
 #RUN go install -v ./...
 
-RUN go build -o /accountsService -i /go/src/git.osmon.local/personalf-services-accounts/accountsService.go
+RUN go build -o /accountsService -ldflags "-linkmode external -extldflags -static" -i /go/src/git.osmon.local/personalf-services-accounts/accountsService.go
 CMD ["/accountsService"]
 
+FROM scratch
+LABEL maintainer="eduardo.osorio.it@gmail.com"
+WORKDIR /
+COPY --from=0 /accountsService /accountsService
+EXPOSE 11112
+CMD ["/accountsService"]
