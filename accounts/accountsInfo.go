@@ -39,7 +39,7 @@ func GetAccounts(accountID int64, accountType int64) ([]Account, error) {
 		}
 	}
 	if accountType != 0 {
-		query = fmt.Sprintf("%s id=%d ", query, accountType)
+		query = fmt.Sprintf("%s parent_id=%d ", query, accountType)
 	}
 	query = fmt.Sprintf("%s ORDER BY name ASC", query)
 	db, err := sql.Open("postgres", connectString)
