@@ -17,5 +17,5 @@ FROM scratch
 LABEL maintainer="eduardo.osorio.it@gmail.com"
 WORKDIR /
 COPY --from=0 /accountsService /accountsService
-EXPOSE 11112
+EXPOSE 11111
 CMD ["/accountsService"]
