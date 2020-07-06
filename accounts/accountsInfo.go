@@ -26,7 +26,8 @@ type Account struct {
 
 // GetAccounts returns info from all the accounts
 func GetAccounts(accountID int64, accountType int64) ([]Account, error) {
-	dbConnectInfo := databaseInfo.DBconnectInfo
+	dbConnectInfo := databaseInfo.GetConfigFromEnv()
+
 	connectString := fmt.Sprintf("host=%s dbname=%s user=%s sslmode=disable", dbConnectInfo.Hostname, dbConnectInfo.Name, dbConnectInfo.User)
 	query := "SELECT id, fin_entity_id, name, card_type FROM cards "
 	if accountID != 0 || accountType != 0 {
