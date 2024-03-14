@@ -20,8 +20,8 @@ func accountsGetInfo(w http.ResponseWriter, _ *http.Request, accountID int64, ac
 }
 
 // accountsGetFavouritesInfo returns the JSON object with the information of the accounts marked as favourites
-func accountsGetFavouritesInfo(w http.ResponseWriter, _ *http.Request, accountID int64, accountType int64) {
-	accountsInfo, err := accounts.GetFavouriteAccounts(accountID, accountType)
+func accountsGetFavouritesInfo(w http.ResponseWriter, _ *http.Request, accountType int64) {
+	accountsInfo, err := accounts.GetFavouriteAccounts(accountType)
 	if err != nil {
 		postError(w, http.StatusInternalServerError)
 		return

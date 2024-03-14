@@ -1,5 +1,5 @@
 # Go part
-FROM golang:1.16
+FROM docker.io/golang:1.16
 EXPOSE 11111
 
 WORKDIR /go/src/git.local.osmonfam.net

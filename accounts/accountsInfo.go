@@ -43,6 +43,7 @@ func GetAccounts(accountID int64, accountType int64) ([]Account, error) {
 		query = fmt.Sprintf("%s card_type=%d ", query, accountType)
 	}
 	query = fmt.Sprintf("%s ORDER BY name ASC", query)
+	log.Printf("DEBUG: (GetAccounts) Executing query #%v#", query)
 	db, err := sql.Open("postgres", connectString)
 	if err != nil {
 		log.Fatal(err)
@@ -72,24 +73,17 @@ func GetAccounts(accountID int64, accountType int64) ([]Account, error) {
 }
 
 // GetAccounts returns info from the accounts marked as favourites
-func GetFavouriteAccounts(accountID int64, accountType int64) ([]Account, error) {
+func GetFavouriteAccounts(accountType int64) ([]Account, error) {
 	dbConnectInfo := databaseInfo.GetConfigFromEnv()
 
 	connectString := fmt.Sprintf("host=%s dbname=%s user=%s sslmode=disable", dbConnectInfo.Hostname, dbConnectInfo.Name, dbConnectInfo.User)
-	query := "SELECT id, fin_entity_id, name, card_type FROM cards "
-	if accountID != 0 || accountType != 0 {
-		query = query + "WHERE favourite AND"
-	}
-	if accountID != 0 {
-		query = fmt.Sprintf("%s id=%d", query, accountID)
-		if accountType != 0 {
-			query = query + " AND "
-		}
-	}
+	query := "SELECT id, fin_entity_id, name, card_type FROM cards WHERE favourite"
 	if accountType != 0 {
-		query = fmt.Sprintf("%s card_type=%d ", query, accountType)
+		query = fmt.Sprintf("%s AND card_type=%d ", query, accountType)
 	}
 	query = fmt.Sprintf("%s ORDER BY name ASC", query)
+	log.Printf("DEBUG: (GetFavouriteAccounts) Executing query #%v#", query)
+
 	db, err := sql.Open("postgres", connectString)
 	if err != nil {
 		log.Fatal(err)

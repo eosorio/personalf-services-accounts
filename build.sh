@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Image will be tagged as devel. I need a pipeline to promote it to stable
+# Run this script from the upper directory (personalf-services-accounts/build.sh)
 
+# Image will be tagged as devel. I need a pipeline to promote it to stable
 docker_image_name=eosorio/personalf-services-accounts
 version_today=$(date "+%Y%m%d")
 

@@ -52,7 +52,7 @@ func AccountsRouter(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		if favourites {
-			accountsGetFavouritesInfo(w, r, accountID, accountType)
+			accountsGetFavouritesInfo(w, r, accountType)
 		} else {
 			accountsGetInfo(w, r, accountID, accountType)
 		}
