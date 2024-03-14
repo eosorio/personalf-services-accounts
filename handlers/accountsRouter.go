@@ -17,6 +17,9 @@ func AccountsRouter(w http.ResponseWriter, r *http.Request) {
 		err         error
 	)
 
+	// Request to return only the accounts marked as favourites?
+	favourites := false
+
 	// Get parameters passed in the URL
 	query := r.URL.Query()
 	for key, value := range query {
@@ -25,6 +28,8 @@ func AccountsRouter(w http.ResponseWriter, r *http.Request) {
 			sAccountID = value
 		case "accountType":
 			sAccountType = value
+		case "favouritesOnly":
+			favourites = true
 		}
 	}
 
@@ -46,7 +51,11 @@ func AccountsRouter(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodGet:
-		accountsGetInfo(w, r, accountID, accountType)
+		if favourites {
+			accountsGetFavouritesInfo(w, r, accountID, accountType)
+		} else {
+			accountsGetInfo(w, r, accountID, accountType)
+		}
 		return
 	case http.MethodPost:
 		return

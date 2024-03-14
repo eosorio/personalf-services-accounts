@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"git.osmon.local/personalf-services-accounts/handlers"
 	"net/http"
 	"os"
+
+	"git.local.osmonfam.net/personalf-services-accounts/handlers"
 )
 
 func main() {
