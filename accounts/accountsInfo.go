@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	"git.osmon.local/personalf-services/databaseInfo"
+	"git.local.osmonfam.net/personalf-services/databaseInfo"
 	_ "github.com/lib/pq"
 )
 
@@ -43,6 +43,47 @@ func GetAccounts(accountID int64, accountType int64) ([]Account, error) {
 		query = fmt.Sprintf("%s card_type=%d ", query, accountType)
 	}
 	query = fmt.Sprintf("%s ORDER BY name ASC", query)
+	log.Printf("DEBUG: (GetAccounts) Executing query #%v#", query)
+	db, err := sql.Open("postgres", connectString)
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	defer db.Close()
+	rows, err := db.Query(query)
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	defer rows.Close()
+	accountsList := make([]Account, 0)
+
+	for rows.Next() {
+		var accountItem Account
+		if err := rows.Scan(&accountItem.ID, &accountItem.FinancialEntityID,
+			&accountItem.Name,
+			&accountItem.AccountTypeID); err != nil {
+			log.Fatal(err)
+			return nil, err
+		}
+		accountsList = append(accountsList, accountItem)
+	}
+	return accountsList, nil
+}
+
+// GetAccounts returns info from the accounts marked as favourites
+func GetFavouriteAccounts(accountType int64) ([]Account, error) {
+	dbConnectInfo := databaseInfo.GetConfigFromEnv()
+
+	connectString := fmt.Sprintf("host=%s dbname=%s user=%s sslmode=disable", dbConnectInfo.Hostname, dbConnectInfo.Name, dbConnectInfo.User)
+	query := "SELECT id, fin_entity_id, name, card_type FROM cards WHERE favourite"
+	if accountType != 0 {
+		query = fmt.Sprintf("%s AND card_type=%d ", query, accountType)
+	}
+	query = fmt.Sprintf("%s ORDER BY name ASC", query)
+	log.Printf("DEBUG: (GetFavouriteAccounts) Executing query #%v#", query)
+
 	db, err := sql.Open("postgres", connectString)
 	if err != nil {
 		log.Fatal(err)
