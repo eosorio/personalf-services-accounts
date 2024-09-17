@@ -4,7 +4,7 @@ on: push
 
 jobs:
   init:
-    runs-on: sef-hosted
+    runs-on: self-hosted
     steps:
       - run: echo 'Compiling micro service accounts'
       - run: go get github.com/eosorio/personalf-services-accounts
