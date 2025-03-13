@@ -28,7 +28,8 @@ type Account struct {
 func GetAccounts(accountID int64, accountType int64) ([]Account, error) {
 	dbConnectInfo := databaseInfo.GetConfigFromEnv()
 
-	connectString := fmt.Sprintf("host=%s dbname=%s user=%s sslmode=disable", dbConnectInfo.Hostname, dbConnectInfo.Name, dbConnectInfo.User)
+	connectString := fmt.Sprintf("host=%s dbname=%s user=%s password=%s sslmode=disable",
+		dbConnectInfo.Hostname, dbConnectInfo.Name, dbConnectInfo.User, dbConnectInfo.Pass)
 	query := "SELECT id, fin_entity_id, name, card_type FROM cards "
 	if accountID != 0 || accountType != 0 {
 		query = query + "WHERE "
@@ -76,7 +77,8 @@ func GetAccounts(accountID int64, accountType int64) ([]Account, error) {
 func GetFavouriteAccounts(accountType int64) ([]Account, error) {
 	dbConnectInfo := databaseInfo.GetConfigFromEnv()
 
-	connectString := fmt.Sprintf("host=%s dbname=%s user=%s sslmode=disable", dbConnectInfo.Hostname, dbConnectInfo.Name, dbConnectInfo.User)
+	connectString := fmt.Sprintf("host=%s dbname=%s user=%s password=%s sslmode=disable",
+		dbConnectInfo.Hostname, dbConnectInfo.Name, dbConnectInfo.User, dbConnectInfo.Pass)
 	query := "SELECT id, fin_entity_id, name, card_type FROM cards WHERE favourite"
 	if accountType != 0 {
 		query = fmt.Sprintf("%s AND card_type=%d ", query, accountType)
