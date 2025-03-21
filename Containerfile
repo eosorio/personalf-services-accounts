@@ -33,12 +33,11 @@ RUN go mod edit -replace git.local.osmonfan.net/personalf-services-accounts/acco
 RUN go mod edit -replace git.local.osmonfam.net/personalf-services/databaseInfo=../personalf-services/databaseInfo
 RUN go mod tidy
 
-RUN go build -o /accountsService -ldflags "-linkmode external -extldflags -static" -i /go/src/git.local.osmonfam.net/personalf-services-accounts/accountsService.go
-CMD ["/accountsService"]
+RUN go build -o /accountsService -ldflags "-linkmode external -extldflags -static"
 
 FROM scratch
 LABEL maintainer="eduardo.osorio.it@gmail.com"
 WORKDIR /
-COPY --from=0 /accountsService /accountsService
+COPY --from=0 /accountsService /personalf-services-accounts/accountsService
 EXPOSE 11111
-CMD ["/accountsService"]
+CMD ["/personalf-services-accounts/accountsService"]

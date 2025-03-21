@@ -1,0 +1,40 @@
+name: Compile the accounts microservice
+description: Builds and publishes the container with the accounts service
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setting date tag
+        run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
+
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          buildkitd-flags: --debug
+          buildkitd-config-inline: |
+            [registry."${{ vars.CONTAINER_REGISTRY }}"]
+              http = true
+              insecure = true
+
+      - name: Build
+        uses: docker/build-push-action@v6
+        env:
+          CURRENT_DATE: ${{ env.CURRENT_DATE }}
+        with:
+          file: Containerfile
+          push: true
+          tags: ${{ vars.CONTAINER_REGISTRY }}/eosorio/personalf-services-accounts:latest , ${{ vars.CONTAINER_REGISTRY }}/eosorio/personalf-services-accounts:${{ env.CURRENT_DATE }}-dev
