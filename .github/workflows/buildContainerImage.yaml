@@ -28,6 +28,15 @@ jobs:
           echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
           echo "IMAGE_NAME=eosorio/personalf-services-accounts" >> $GITHUB_ENV
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          buildkitd-flags: --debug
+          buildkitd-config-inline: |
+            [registry."${{ vars.CONTAINER_REGISTRY }}"]
+              http = true
+              insecure = true
+
       - name: Build and push the image
         working-directory: build
         run: |
