@@ -19,15 +19,9 @@ jobs:
           ref: main
 
       - name: Checking out personalf-services
-        uses: actions/checkout@v4
-        with:
-          path: build
-          ref: main
-          repository: eosorio/personalf-services
-          ## Repository is public we don't need credentials
-          # ssh-key: ${{ secrets.GH_EOSORIO_REPO_SSH_KEY }}
-          # ssh-strict: false
-          # ssh-user: git
+        working-directory: build
+        run: |
+          git clone ${{ var.PERSONALF_SERVICES_REPO_URL }}
 
       - name: Setting date tag
         run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
