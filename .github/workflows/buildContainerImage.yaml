@@ -16,6 +16,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: build
+          ref: main
 
       - name: Checking out personalf-services
         uses: actions/checkout@v4
@@ -23,9 +24,10 @@ jobs:
           path: build
           ref: main
           repository: eosorio/personalf-services
-          ssh-key: ${{ secrets.GH_EOSORIO_REPO_SSH_KEY }}
-          ssh-strict: false
-          ssh-user: git
+          ## Repository is public we don't need credentials
+          # ssh-key: ${{ secrets.GH_EOSORIO_REPO_SSH_KEY }}
+          # ssh-strict: false
+          # ssh-user: git
 
       - name: Setting date tag
         run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
