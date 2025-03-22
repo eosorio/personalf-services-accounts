@@ -29,7 +29,9 @@ jobs:
           echo "IMAGE_NAME= eosorio/personalf-services-accounts" >> $GITHUB_ENV
 
       - name: Build the image and tagging as latest
+        working-directory: build
         run: |
+          ls -l
           docker build -t ${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }} -f personalf-services-accounts/Containerfile .
           docker tag ${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }} ${{ vars.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }}
           docker tag ${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }} ${{ vars.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
