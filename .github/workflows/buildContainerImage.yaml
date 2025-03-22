@@ -14,6 +14,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          path: build
+
+      - name: Checking out personalf-services
+        uses: actions/checkout@v4
+        with:
+          path: build
+          repository: eosorio/personalf-services
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Setting date tag
         run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
@@ -35,6 +44,7 @@ jobs:
         env:
           CURRENT_DATE: ${{ env.CURRENT_DATE }}
         with:
-          file: Containerfile
+          context: "{{defaultContext}}:build"
+          file: personalf-services-accounts/Containerfile
           push: true
           tags: ${{ vars.CONTAINER_REGISTRY }}/eosorio/personalf-services-accounts:latest , ${{ vars.CONTAINER_REGISTRY }}/eosorio/personalf-services-accounts:${{ env.CURRENT_DATE }}-dev
