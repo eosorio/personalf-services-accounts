@@ -41,9 +41,7 @@ jobs:
         working-directory: build
         run: |
           ls -l
-          docker buildx build --push --progress quiet -t ${{ vars.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }} -f personalf-services-accounts/Containerfile .
-
-      - name: Tag image as latest
-        run: |
-          docker tag ${{ vars.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }} ${{ vars.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          docker push ${{ vars.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker buildx build --push --progress plain \
+            -t ${{ vars.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }} \
+            -t ${{ vars.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
+            -f personalf-services-accounts/Containerfile .
