@@ -31,6 +31,7 @@ jobs:
       - name: Build the image and tagging as latest
         working-directory: build
         run: |
+          git clone ${{ var.PERSONALF_SERVICES_REPO_URL }}
           ls -l
           docker build -t ${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }} -f personalf-services-accounts/Containerfile .
           docker tag ${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }} ${{ vars.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }}
