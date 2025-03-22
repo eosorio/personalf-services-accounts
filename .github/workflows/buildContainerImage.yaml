@@ -23,7 +23,9 @@ jobs:
           path: build
           ref: main
           repository: eosorio/personalf-services
-          token: ${{ secrets.GH_TOKEN }}
+          ssh-key: ${{ secrets.GH_EOSORIO_REPO_SSH_KEY }}
+          ssh-strict: false
+          ssh-user: git
 
       - name: Setting date tag
         run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
